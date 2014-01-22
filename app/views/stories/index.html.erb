@@ -1,0 +1,40 @@
+<%= content_for :page_title, "Recent stories" %>
+
+<section class="stories">
+
+	<% @stories.each do |story| %>
+
+		<div class="story">
+
+			<h2><%= link_to story.title, story.url %></h2>
+			
+			<p><%= story.description %></p>
+
+			<ul>
+				<li>
+					<%= link_to "Upvote", 
+					story_votes_path(story, back_to: "home"), 
+					method: :post %>
+				</li>
+
+				<li>
+					<%= link_to pluralize(story.comments.count, "comment"), 
+					story_path(story) %>
+				</li>
+
+				<li><%= pluralize story.votes.count, "vote" %></li>
+
+				<li><%= story.nice_url %></li>
+
+				<li>Posted <%= time_ago_in_words story.created_at %> ago</li>
+			</ul>
+
+		</div>
+
+	<% end %>
+
+</section>
+
+<%= paginate @stories %>
+
+<%= link_to "Submit a link", new_story_path %>
